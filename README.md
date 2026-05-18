@@ -110,3 +110,12 @@ Stop and remove the containers and remove the associated images and volumes:
 ```sh
 docker compose down --volumes --rmi all 
 ```
+### GitHub API configuration
+
+This project fetches the most-starred public PHP repositories from the GitHub Search API on the homepage. You can optionally provide a GitHub token to increase rate limits:
+
+```sh
+GITHUB_TOKEN=your_token
+```
+
+If no token is set, the app still works with unauthenticated GitHub API requests, subject to public rate limits (10 per min).

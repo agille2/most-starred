@@ -1,4 +1,37 @@
 {% extends 'base.html.twig' %}
+
+{% block title %}Most Starred PHP Projects{% endblock %}
+
 {% block body %}
-    <h1>Hello, world</h1>
+    <h1>Most Starred Public PHP Projects</h1>
+    <p>Data is fetched from GitHub's Search API for public PHP repositories sorted by stars.</p>
+
+    {% if error is not empty %}
+        <p style="color: red;">{{ error }}</p>
+    {% endif %}
+
+    {% if repositories is empty %}
+        <p>No repositories could be loaded right now.</p>
+    {% else %}
+        <table border="1" cellpadding="8" cellspacing="0" style="border-collapse: collapse; width: 100%;">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                    <th>Stars</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for repo in repositories %}
+                    <tr>
+                        <td>{{ loop.index }}</td>
+                        <td><a href="{{ repo.html_url }}" target="_blank" rel="noreferrer">{{ repo.full_name }}</a></td>
+                        <td>{{ repo.description ?: 'No description' }}</td>
+                        <td>{{ repo.stargazers_count }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% endif %}
 {% endblock %}
