@@ -7,25 +7,29 @@ namespace DoctrineMigrations;
 use Doctrine\DBAL\Schema\Schema;
 use Doctrine\Migrations\AbstractMigration;
 
-/**
- * Auto-generated Migration: Please modify to your needs!
- */
 final class Version20260519143312 extends AbstractMigration
 {
     public function getDescription(): string
     {
-        return '';
+        return 'Create github_php_projects table';
     }
 
     public function up(Schema $schema): void
     {
-        // this up() migration is auto-generated, please modify it to your needs
-        $this->addSql('ALTER TABLE github_php_projects DROP created_at, DROP updated_at, CHANGE description description LONGTEXT DEFAULT NULL');
+        $this->addSql('CREATE TABLE github_php_projects (
+            repo_id BIGINT UNSIGNED NOT NULL,
+            name VARCHAR(255) NOT NULL,
+            url VARCHAR(255) NOT NULL,
+            created_date DATETIME NOT NULL,
+            last_push_date DATETIME NOT NULL,
+            description LONGTEXT DEFAULT NULL,
+            stars INT UNSIGNED NOT NULL,
+            PRIMARY KEY(repo_id)
+        ) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
     }
 
     public function down(Schema $schema): void
     {
-        // this down() migration is auto-generated, please modify it to your needs
-        $this->addSql('ALTER TABLE github_php_projects ADD created_at DATETIME DEFAULT CURRENT_TIMESTAMP, ADD updated_at DATETIME DEFAULT CURRENT_TIMESTAMP, CHANGE description description TEXT DEFAULT NULL');
+        $this->addSql('DROP TABLE github_php_projects');
     }
 }
