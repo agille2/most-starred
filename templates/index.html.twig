@@ -4,21 +4,27 @@
 
 {% block body %}
     <h1>Most Starred Public PHP Projects</h1>
-    <p>Data is fetched from GitHub's Search API for public PHP repositories sorted by stars.</p>
 
-    {% if error is not empty %}
-        <p style="color: red;">{{ error }}</p>
-    {% endif %}
+    <p>
+        <a href="{{ path('refresh_github_projects') }}" style="display: inline-block; padding: 8px 16px; background: #007bff; color: white; text-decoration: none; border-radius: 4px;">Refresh from GitHub</a>
+    </p>
+
+    {% for label, messages in app.flashes %}
+        {% for message in messages %}
+            <div style="padding: 10px; margin-bottom: 12px; border-radius: 4px; {{ label == 'error' ? 'background: #f8d7da; color: #842029;' : 'background: #d1e7dd; color: #0f5132;' }}">
+                {{ message }}
+            </div>
+        {% endfor %}
+    {% endfor %}
 
     {% if repositories is empty %}
-        <p>No repositories could be loaded right now.</p>
+        <p>No GitHub repository data is currently stored. Click "Refresh from GitHub" to load the latest data.</p>
     {% else %}
-        <table border="1" cellpadding="8" cellspacing="0" style="border-collapse: collapse; width: 100%;">
+        <table id="projects-table" class="display" border="1" cellpadding="8" cellspacing="0" style="border-collapse: collapse; width: 100%;">
             <thead>
                 <tr>
                     <th>#</th>
                     <th>Name</th>
-                    <th>Description</th>
                     <th>Stars</th>
                 </tr>
             </thead>
@@ -26,12 +32,26 @@
                 {% for repo in repositories %}
                     <tr>
                         <td>{{ loop.index }}</td>
-                        <td><a href="{{ repo.html_url }}" target="_blank" rel="noreferrer">{{ repo.full_name }}</a></td>
-                        <td>{{ repo.description ?: 'No description' }}</td>
-                        <td>{{ repo.stargazers_count }}</td>
+                        <td><a href="{{ path('project_show', {'id': repo.repoId}) }}">{{ repo.name }}</a></td>
+                        <td>{{ repo.stars }}</td>
                     </tr>
                 {% endfor %}
             </tbody>
         </table>
     {% endif %}
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            if (window.jQuery && $.fn.dataTable) {
+                $('#projects-table').DataTable({
+                    pageLength: 25,
+                    order: [[2, 'desc']],
+                    columns: [
+                        { orderable: false },
+                        null,
+                        null
+                    ]
+                });
+            }
+        });
+    </script>
 {% endblock %}

@@ -1,0 +1,15 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Project Details - {{ repo.name }}{% endblock %}
+
+{% block body %}
+    <h1>Project Details</h1>
+
+    <p><strong>Name:</strong> <a href="{{ repo.url }}" target="_blank" rel="noreferrer">{{ repo.name }}</a></p>
+    <p><strong>Stars:</strong> {{ repo.stars }}</p>
+    <p><strong>Description:</strong> {{ repo.description ?: 'No description' }}</p>
+    <p><strong>Created:</strong> {{ repo.createdDate ? repo.createdDate|date('Y-m-d H:i') : 'N/A' }}</p>
+    <p><strong>Last Push:</strong> {{ repo.lastPushDate ? repo.lastPushDate|date('Y-m-d H:i') : 'N/A' }}</p>
+
+    <p><a href="{{ path('index') }}">&larr; Back to list</a></p>
+{% endblock %}
