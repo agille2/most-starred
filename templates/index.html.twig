@@ -3,40 +3,68 @@
 {% block title %}Most Starred PHP Projects{% endblock %}
 
 {% block body %}
-    <h1>Most Starred Public PHP Projects</h1>
+<div class="container my-5">
 
-    <p>
-        <a href="{{ path('refresh_github_projects') }}" class="btn btn-primary">Refresh from GitHub</a>
-    </p>
+  <div class="card shadow-sm border-0 mb-4">
+    <div class="card-header bg-dark text-white p-4 d-flex flex-column flex-sm-row justify-content-between align-items-sm-center gap-3 rounded">
+      <h1 class="h3 mb-0">Most Starred Public PHP Projects</h1>
+      <!-- Styled Primary Action Button -->
+      <div>
+        <a href="{{ path('refresh_github_projects') }}" class="btn btn-warning text-dark fw-bold btn-sm px-4 py-2">
+          Refresh from GitHub
+        </a>
+      </div>
+    </div>
+  </div>
 
-    {% for label, messages in app.flashes %}
-        {% for message in messages %}
-            <div class="alert {{ label == 'error' ? 'alert-danger' : 'alert-success' }}" role="alert">
-                {{ message }}
-            </div>
-        {% endfor %}
+  {% for label, messages in app.flashes %}
+    {% for message in messages %}
+      <div class="alert {{ label == 'error' ? 'alert-danger' : 'alert-success' }} alert-dismissible fade show shadow-sm mb-4" role="alert">
+        <strong>{{ label == 'error' ? 'Error:' : 'Success:' }}</strong> {{ message }}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+      </div>
     {% endfor %}
+  {% endfor %}
 
-    {% if repositories is empty %}
-        <p>No GitHub repository data is currently stored. Click "Refresh from GitHub" to load the latest data.</p>
-    {% else %}
-        <table id="projects-table" class="display table table-striped table-hover table-bordered">
-            <thead>
-                <tr>
-                    <th>#</th>
-                    <th>Name</th>
-                    <th>Stars</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for repo in repositories %}
-                    <tr>
-                        <td>{{ loop.index }}</td>
-                        <td><a href="{{ path('project_show', {'id': repo.repoId}) }}">{{ repo.name }}</a></td>
-                        <td>{{ repo.stars }}</td>
-                    </tr>
-                {% endfor %}
-            </tbody>
-        </table>
-    {% endif %}
+  {% if repositories is empty %}
+    <!-- Empty State Informational Banner -->
+    <div class="alert alert-info border-0 shadow-sm p-4 text-center" role="alert">
+      <h4 class="alert-heading h5 fw-bold mb-2">No Repository Data Found</h4>
+      <p class="mb-0 text-secondary">No GitHub repository data is currently stored. Click "Refresh from GitHub" above to load the latest data.</p>
+    </div>
+  {% else %}
+    <div class="table-responsive border rounded shadow-sm bg-white">
+      <table id="projects-table" class="display table table-hover table-striped align-middle mb-0">
+        <thead class="table-light border-bottom">
+          <tr>
+            <th scope="col" class="ps-3 text-muted text-uppercase small tracking-wider" style="width: 10%;">#</th>
+            <th scope="col" class="text-muted text-uppercase small tracking-wider" style="width: 65%;">Project Name</th>
+            <th scope="col" class="pe-3 text-muted text-uppercase small tracking-wider" style="width: 25%;">Stars</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for repo in repositories %}
+            <tr>
+              <!-- Row Index ID Counter -->
+              <th scope="row" class="ps-3 font-monospace text-muted">{{ loop.index }}</th>
+              
+              <!-- Link to Detailed View -->
+              <td>
+                <a href="{{ path('project_show', {'id': repo.repoId}) }}" class="fw-bold text-decoration-none">
+                  {{ repo.name }}
+                </a>
+              </td>
+              
+              <td class="pe-3">
+                <span class="badge bg-warning text-dark font-monospace fw-bold px-2 py-1">
+                  {{ repo.stars }}
+                </span>
+              </td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  {% endif %}
+</div>
 {% endblock %}
