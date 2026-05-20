@@ -57,4 +57,32 @@ class GitHubPhpProjectRepository extends ServiceEntityRepository
 
         return $count;
     }
+
+    public function findPaginatedForDataTables(int $offset, int $limit, string $search): array
+    {
+        $qb = $this->createQueryBuilder('p')
+            ->setFirstResult($offset)
+            ->setMaxResults($limit)
+            ->orderBy('p.stars', 'DESC');
+
+        if (!empty($search)) {
+            $qb->andWhere('p.name LIKE :search')
+            ->setParameter('search', '%' . $search . '%');
+        }
+
+        return $qb->getQuery()->getResult();
+    }
+
+    public function countFilteredForDataTables(string $search): int
+    {
+        $qb = $this->createQueryBuilder('p')
+            ->select('COUNT(p.repoId)');
+
+        if (!empty($search)) {
+            $qb->andWhere('p.name LIKE :search')
+            ->setParameter('search', '%' . $search . '%');
+        }
+
+        return (int) $qb->getQuery()->getSingleScalarResult();
+    }
 }

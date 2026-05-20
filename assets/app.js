@@ -17,12 +17,36 @@ document.addEventListener('DOMContentLoaded', function () {
 
     if (window.jQuery && $.fn.dataTable) {
         $('#projects-table').DataTable({
+            processing: true,
+            serverSide: true,
             pageLength: 25,
             order: [[2, 'desc']],
+            ajax: {
+                url: '/api/projects',
+                type: 'GET'
+            },
             columns: [
-                { orderable: false },
-                null,
-                null
+                { 
+                    data: 'id', 
+                    orderable: false,
+                    render: function (data, type, row, meta) {
+                        var globalIndex = meta.settings._iDisplayStart + meta.row + 1;
+                        return '<th scope="row" class="ps-3 font-monospace text-muted">' + globalIndex + '</th>';
+                    }
+                },
+                { 
+                    data: 'name',
+                    render: function (data, type, row) {
+                        var projectUrl = '/project/' + row.id; 
+                        return '<a href="' + projectUrl + '" class="fw-bold text-decoration-none">' + data + '</a>';
+                    }
+                },
+                { 
+                    data: 'stars',
+                    render: function (data, type, row) {
+                        return '<span class="badge bg-warning text-dark font-monospace fw-bold px-2 py-1">' + data + '</span>';
+                    }
+                }
             ]
         });
     }

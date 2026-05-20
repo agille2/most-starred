@@ -26,13 +26,6 @@
     {% endfor %}
   {% endfor %}
 
-  {% if repositories is empty %}
-    <!-- Empty State Informational Banner -->
-    <div class="alert alert-info border-0 shadow-sm p-4 text-center" role="alert">
-      <h4 class="alert-heading h5 fw-bold mb-2">No Repository Data Found</h4>
-      <p class="mb-0 text-secondary">No GitHub repository data is currently stored. Click "Refresh from GitHub" above to load the latest data.</p>
-    </div>
-  {% else %}
     <div class="table-responsive border rounded shadow-sm bg-white">
       <table id="projects-table" class="display table table-hover table-striped align-middle mb-0">
         <thead class="table-light border-bottom">
@@ -43,28 +36,9 @@
           </tr>
         </thead>
         <tbody>
-          {% for repo in repositories %}
-            <tr>
-              <!-- Row Index ID Counter -->
-              <th scope="row" class="ps-3 font-monospace text-muted">{{ loop.index }}</th>
-              
-              <!-- Link to Detailed View -->
-              <td>
-                <a href="{{ path('project_show', {'id': repo.repoId}) }}" class="fw-bold text-decoration-none">
-                  {{ repo.name }}
-                </a>
-              </td>
-              
-              <td class="pe-3">
-                <span class="badge bg-warning text-dark font-monospace fw-bold px-2 py-1">
-                  {{ repo.stars }}
-                </span>
-              </td>
-            </tr>
-          {% endfor %}
+        <!-- Empty! DataTables will inject rows here via AJAX -->
         </tbody>
       </table>
     </div>
-  {% endif %}
 </div>
 {% endblock %}
