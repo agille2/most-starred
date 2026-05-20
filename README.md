@@ -52,6 +52,13 @@ docker compose exec web bin/console doctrine:migrations:migrate
 
 Go to http://127.0.0.1:8080/test/ to make sure adding and deleting entities is working properly.
 
+To run GitHubPhpProjectRepositoryTest.php first create isolated _test database and duplicate the structure
+
+```sh
+docker compose exec web bin/console --env=test doctrine:database:create
+docker compose exec web bin/console --env=test doctrine:migrations:migrate --no-interaction
+```
+
 ## Additional notes
 
 ### Web container
