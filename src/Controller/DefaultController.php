@@ -28,7 +28,7 @@ class DefaultController extends AbstractController
     public function refresh(GitHubApiClient $apiClient, GitHubPhpProjectRepository $repository): Response
     {
         try {
-            $items = $apiClient->searchMostStarredPhpProjects(25);
+            $items = $apiClient->searchMostStarredPhpProjects(100);
             $updated = $repository->upsertFromGitHubSearchResults($items);
             $this->addFlash('success', sprintf('Refreshed %d GitHub projects in the database.', $updated));
         } catch (ClientExceptionInterface | RedirectionExceptionInterface | ServerExceptionInterface | TransportExceptionInterface $exception) {

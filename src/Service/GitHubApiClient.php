@@ -10,6 +10,9 @@ use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
 
 class GitHubApiClient
 {
+    // Define the limit as a class constant
+    public const DEFAULT_LIMIT = 100;//1,000 max possible (The GitHub REST API cap)
+
     private HttpClientInterface $client;
     private ?string $token;
 
@@ -24,7 +27,7 @@ class GitHubApiClient
      * and also to avoid complexity of GraphQL queries and potential rate limit issues.
      * @return array<int, array<string, mixed>>
      */
-    public function searchMostStarredPhpProjects(int $limit = 25): array
+    public function searchMostStarredPhpProjects(int $limit = self::DEFAULT_LIMIT): array
     {
         $options = [
             'query' => [
