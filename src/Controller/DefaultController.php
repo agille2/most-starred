@@ -67,15 +67,6 @@ class DefaultController extends AbstractController
             'data'            => $data,
         ]);
     }
-   /* #[Route('/', name: 'index')]
-    public function index(GitHubPhpProjectRepository $repository): Response
-    {
-        $repositories = $repository->findAllOrderedByStars();
-
-        return $this->render('index.html.twig', [
-            'repositories' => $repositories,
-        ]);
-    }*/
 
     #[Route('/refresh', name: 'refresh_github_projects')]
     public function refresh(GitHubApiClient $apiClient, GitHubPhpProjectRepository $repository): Response
