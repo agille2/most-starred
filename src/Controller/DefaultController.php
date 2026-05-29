@@ -42,12 +42,23 @@ class DefaultController extends AbstractController
         $searchArray = $request->query->all('search');
         $searchValue = $searchArray['value'] ?? '';
 
+        // 1b. Extract Sorting parameters safely
+        $orderArray = $request->query->all('order');
+        $columnsArray = $request->query->all('columns');
+
+        // Read the first sorting rule (index 0)
+        $orderColumnIdx = $orderArray[0]['column'] ?? 0;
+        $orderDir = $orderArray[0]['dir'] ?? 'desc';
+
+        // Find the data key (e.g. 'name' or 'stars') bound to that column index
+        $orderColumnName = $columnsArray[$orderColumnIdx]['data'] ?? 'stars';
+
         // 2. Query structural metadata counts
         $totalRecords = $repository->count([]);
         $filteredRecords = $repository->countFilteredForDataTables($searchValue);
 
         // 3. Fetch slice of records matching parameters
-        $projects = $repository->findPaginatedForDataTables($start, $length, $searchValue);
+         $projects = $repository->findPaginatedForDataTables($start, $length, $searchValue, $orderColumnName, $orderDir);
 
         // 4. Transform entities into uniform key/value schemas matching JavaScript rules
         $data = [];

@@ -58,12 +58,19 @@ class GitHubPhpProjectRepository extends ServiceEntityRepository
         return $count;
     }
 
-    public function findPaginatedForDataTables(int $offset, int $limit, string $search): array
+    public function findPaginatedForDataTables(int $offset, int $limit, string $search, string $sortField = 'stars', string $sortDir = 'desc'): array 
     {
         $qb = $this->createQueryBuilder('p')
             ->setFirstResult($offset)
-            ->setMaxResults($limit)
-            ->orderBy('p.stars', 'DESC');
+            ->setMaxResults($limit);
+
+        // Sanitize column inputs to prevent SQL injection
+        $allowedFields = ['id', 'name', 'stars'];
+        $sortField = in_array($sortField, $allowedFields, true) ? $sortField : 'stars';
+
+        $sortDir = strtoupper($sortDir) === 'ASC' ? 'ASC' : 'DESC';
+
+        $qb->orderBy('p.' . $sortField, $sortDir);
 
         if (!empty($search)) {
             $qb->andWhere('p.name LIKE :search')

@@ -29,6 +29,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 { 
                     data: 'id', 
                     orderable: false,
+                    searchable: false,
                     render: function (data, type, row, meta) {
                         var globalIndex = meta.settings._iDisplayStart + meta.row + 1;
                         return '<th scope="row" class="ps-3 font-monospace text-muted">' + globalIndex + '</th>';
@@ -43,6 +44,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 },
                 { 
                     data: 'stars',
+                    searchable: false,
                     render: function (data, type, row) {
                         return '<span class="badge bg-warning text-dark font-monospace fw-bold px-2 py-1">' + data + '</span>';
                     }
