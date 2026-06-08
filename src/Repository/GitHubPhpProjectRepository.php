@@ -33,10 +33,11 @@ class GitHubPhpProjectRepository extends ServiceEntityRepository
             if (!isset($item['id'], $item['full_name'], $item['html_url'], $item['created_at'], $item['pushed_at'], $item['stargazers_count'])) {
                 continue;
             }
-
+            $newRecord = false;
             $repo = $this->find((int) $item['id']) ?? new GitHubPhpProject();
 
             if ($repo->getRepoId() === null) {
+                $newRecord = true;
                 $repo->setRepoId((int) $item['id']);
             }
 
@@ -47,7 +48,9 @@ class GitHubPhpProjectRepository extends ServiceEntityRepository
             $repo->setDescription(isset($item['description']) ? (string) $item['description'] : null);
             $repo->setStars((int) $item['stargazers_count']);
 
-            $em->persist($repo);
+            if($newRecord === true){
+                $em->persist($repo);
+            }
             $count++;
         }
 
