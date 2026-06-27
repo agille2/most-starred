@@ -126,3 +126,6 @@ GITHUB_TOKEN=your_token
 ```
 
 If no token is set, the app still works with unauthenticated GitHub API requests, subject to public rate limits (10 per min).
+
+### Screenshots
+<img width="1306" height="1237" alt="GitHubProject" src="https://github.com/user-attachments/assets/62c2cab1-bbeb-4442-b8cc-de0a696a149e" />
