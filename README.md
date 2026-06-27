@@ -129,3 +129,5 @@ If no token is set, the app still works with unauthenticated GitHub API requests
 
 ### Screenshots
 <img width="1306" height="1237" alt="GitHubProject" src="https://github.com/user-attachments/assets/62c2cab1-bbeb-4442-b8cc-de0a696a149e" />
+<img width="834" height="565" alt="GitHubSingleProjectSymfony" src="https://github.com/user-attachments/assets/ddf64d58-8372-4cf7-b12c-002a40a2aa39" />
+
